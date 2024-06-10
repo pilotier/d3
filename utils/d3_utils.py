@@ -10,11 +10,16 @@ import os
 
 import numpy as np
 
+def depth_to_disp(depth, intrinsics):
+    disp_gt = (intrinsics["fx"] * intrinsics["baseline"]) / depth
+    return disp_gt
+
 def fetch_dataloader(root_dir, shuffle=False, num_workers=12, drop_last = False):
     gpuargs = {'shuffle': shuffle, 'num_workers': num_workers, 'drop_last' : drop_last}
     test_dataset = D3_Reader(root_dir)
+    dataset_intrinsics = test_dataset.intrinsics
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, **gpuargs)
-    return test_loader
+    return test_loader, dataset_intrinsics
 
 
 def prepare_images_and_depths(self, image1, image2):
