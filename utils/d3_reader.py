@@ -10,7 +10,7 @@ import json
 from icecream import ic
 
 class D3_Reader(data.Dataset):
-    def __init__(self, root_dir, mode):
+    def __init__(self, root_dir):
         ic(root_dir)
         self.intrinsics = self.read_intrinsics_from_json(root_dir + "/intrinsics.json")
         self.fx = self.intrinsics["fx"]
