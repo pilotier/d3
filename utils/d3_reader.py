@@ -20,23 +20,25 @@ class D3_Reader(data.Dataset):
         self.h = self.intrinsics["height"]
         self.w = self.intrinsics["width"]
         self.baseline = self.intrinsics["baseline"]
+
+        self.intrinsics = {
+                            "fx": self.fx, 
+                            "fy": self.fy, 
+                            "cx": self.cx, 
+                            "cy": self.cy, 
+                            "baseline": self.baseline, 
+                            "height": self.h, 
+                            "width": self.w}
+
         self.root_dir = root_dir
-
-        # ### Check for a valid mode
-        # try:
-        #     if mode not in ["train", "test"]:
-        #         raise ValueError("mode must be train or test, got {}".format(mode))
-        # except ValueError as e:
-        #     print(e)
-        # self.mode = mode
-
+        self.train_dir = os.path.join(root_dir, "train")
 
         self.data_tuples = []
-        subdirs = sorted([d for d in os.listdir(root_dir) if os.path.isdir(os.path.join(root_dir, d))])
+        subdirs = sorted([d for d in os.listdir(self.train_dir) if os.path.isdir(os.path.join(self.train_dir, d))])
         previous_folder_last_image = None
 
         for subdir in subdirs:
-            subdir_path = os.path.join(root_dir, subdir, "left")
+            subdir_path = os.path.join(self.train_dir, subdir, "left")
             left_files = sorted(os.listdir(subdir_path))
             if previous_folder_last_image:
                 left_files = left_files[1:]
@@ -64,14 +66,14 @@ class D3_Reader(data.Dataset):
         flow_map = np.load(flow_map_path_t)['arr_0']
         z_flow_map = np.load(z_flow_map_path_t)['arr_0']
         
-        eval_h, eval_w = 576, 960
-        left_img_t = cv2.resize(left_img_t, (eval_w, eval_h))
-        left_img_t1 = cv2.resize(left_img_t1, (eval_w, eval_h))
-        right_img_t = cv2.resize(right_img_t, (eval_w, eval_h))
-        depth_map_t = cv2.resize(depth_map_t, (eval_w, eval_h))
-        depth_map_t1 = cv2.resize(depth_map_t1, (eval_w, eval_h))
-        flow_map = cv2.resize(flow_map, (eval_w, eval_h))
-        z_flow_map = cv2.resize(z_flow_map, (eval_w, eval_h))
+        # eval_h, eval_w = 576, 960
+        # left_img_t = cv2.resize(left_img_t, (eval_w, eval_h))
+        # left_img_t1 = cv2.resize(left_img_t1, (eval_w, eval_h))
+        # right_img_t = cv2.resize(right_img_t, (eval_w, eval_h))
+        # depth_map_t = cv2.resize(depth_map_t, (eval_w, eval_h))
+        # depth_map_t1 = cv2.resize(depth_map_t1, (eval_w, eval_h))
+        # flow_map = cv2.resize(flow_map, (eval_w, eval_h))
+        # z_flow_map = cv2.resize(z_flow_map, (eval_w, eval_h))
         
         left_img_t = torch.from_numpy(left_img_t).permute(2, 0, 1).float()
         left_img_t1 = torch.from_numpy(left_img_t1).permute(2, 0, 1).float()
@@ -88,7 +90,8 @@ class D3_Reader(data.Dataset):
         
         depth12 = (self.fx / (disp1 + z_flow_map)).float()
         
-        return left_img_t, left_img_t1, right_img_t, depth_map_t, depth_map_t1, flow_map, flowxyz   
+        return left_img_t, left_img_t1, right_img_t, depth_map_t, depth_map_t1, flow_map, flowxyz    
+    
         
 
     def read_intrinsics_from_json(self, file_path):
@@ -98,24 +101,24 @@ class D3_Reader(data.Dataset):
         return intrinsics
 
 
-    # def normalize_image(self, image):
-    #     image = image[:, [2,1,0]]
-    #     mean = torch.as_tensor([0.485, 0.456, 0.406], device=image.device)
-    #     std = torch.as_tensor([0.229, 0.224, 0.225], device=image.device)
-    #     return (image/255.0).sub_(mean[:, None, None]).div_(std[:, None, None])
+    def normalize_image(self, image):
+        image = image[:, [2,1,0]]
+        mean = torch.as_tensor([0.485, 0.456, 0.406], device=image.device)
+        std = torch.as_tensor([0.229, 0.224, 0.225], device=image.device)
+        return (image/255.0).sub_(mean[:, None, None]).div_(std[:, None, None])
 
-    # def prepare_images_and_depths(self, image1, image2):
-    #     """ padding, normalization, and scaling """
+    def prepare_images_and_depths(self, image1, image2):
+        """ padding, normalization, and scaling """
         
-    #     ht, wd = image1.shape[-2:]
+        ht, wd = image1.shape[-2:]
 
-    #     pad_h = (-ht) % 8
-    #     pad_w = (-wd) % 8
+        pad_h = (-ht) % 8
+        pad_w = (-wd) % 8
 
-    #     image1 = F.pad(image1, [0,pad_w,0,pad_h], mode='replicate')
-    #     image2 = F.pad(image2, [0,pad_w,0,pad_h], mode='replicate')
+        image1 = F.pad(image1, [0,pad_w,0,pad_h], mode='replicate')
+        image2 = F.pad(image2, [0,pad_w,0,pad_h], mode='replicate')
 
-    #     image1 = self.normalize_image(image1.float())
-    #     image2 = self.normalize_image(image2.float())
+        image1 = self.normalize_image(image1.float())
+        image2 = self.normalize_image(image2.float())
 
-    #     return image1, image2 
+        return image1, image2 
