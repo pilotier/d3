@@ -12,7 +12,7 @@ import numpy as np
 
 def d3_data_loop(args):
 
-    d3_test_loader = d3_utils.fetch_dataloader(root_dir=args.root_dir)
+    d3_loader, d3_intrinsics = d3_utils.fetch_dataloader(root_dir=args.root_dir)
 
 
 
@@ -26,14 +26,14 @@ def d3_data_loop(args):
     # percentage of pixels that have a disparity error greater than 2
     bad_pixel_ratio_list_2 = []
 
-    for i_batch, d3_data_blob in enumerate(tqdm(d3_test_loader)):
-        image1, image2, right_img, depth1, depth2, flow2d, flow3d = [data_item.cuda() for data_item in d3_data_blob]
+    for i_batch, d3_data_blob in enumerate(tqdm(d3_loader)):
 
 
-        disp_gt = 800.0 * 0.12 / (depth1.squeeze(0).cpu().numpy()  )
-        disp_gt /= 2.0 ## cuz im downsizing the img by 2
+        left_img_t, left_img_t1, right_img_t, depth_map_t, depth_map_t1, flow_map, flowxyz  = [data_item.cuda() for data_item in d3_data_blob]
+        
+        disp_gt_t = d3_utils.depth_to_disp(depth_map_t, d3_intrinsics)
 
-        ic(i_batch)
+
     #     ### RUN MODEL
     #     lst_disp = leastereo_model(image1, right_img)
     #     np_lst_disp = lst_disp.squeeze(0).cpu().numpy()
