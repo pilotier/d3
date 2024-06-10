@@ -14,8 +14,6 @@ def d3_data_loop(args):
 
     d3_loader, d3_intrinsics = d3_utils.fetch_dataloader(root_dir=args.root_dir)
 
-
-
     ### Metrics
     # end point error
     epe_list = []
@@ -26,36 +24,34 @@ def d3_data_loop(args):
     # percentage of pixels that have a disparity error greater than 2
     bad_pixel_ratio_list_2 = []
 
-    for i_batch, d3_data_blob in enumerate(tqdm(d3_loader)):
+    metrics = {}
 
+    for i_batch, d3_data_blob in enumerate(tqdm(d3_loader)):
 
         left_img_t, left_img_t1, right_img_t, depth_map_t, depth_map_t1, flow_map, flowxyz  = [data_item.cuda() for data_item in d3_data_blob]
         
+        # Compute ground truth dipsarity from depth
         disp_gt_t = d3_utils.depth_to_disp(depth_map_t, d3_intrinsics)
+        # Convert to numpy
+        np_disp_gt = disp_gt_t.squeeze(0).cpu().numpy()
 
+        ### run YOUR MODEL here
+        np_disp_pred = np.random.randint(0, disp_gt_t.shape[-1], np_disp_gt.shape) # placeholder for depth prediction (in disparity)
 
-    #     ### RUN MODEL
-    #     lst_disp = leastereo_model(image1, right_img)
-    #     np_lst_disp = lst_disp.squeeze(0).cpu().numpy()
+        # compute and append metrics
+        epe, rmse, bad_pixels_2, bad_pixels_1 = d3_utils.get_metrics(np_disp_pred, np_disp_gt)
+        epe_list.append(epe)
+        rmse_list.append(rmse)
+        bad_pixel_ratio_list_2.append(bad_pixels_2)
+        bad_pixel_ratio_list_1.append(bad_pixels_1)
 
-    #     epe, rmse, bad_pixels_2, bad_pixels_1 = d3_utils.get_metrics(np_lst_disp, disp_gt)
-    #     epe_list.append(epe)
-    #     rmse_list.append(rmse)
-    #     bad_pixel_ratio_list_2.append(bad_pixels_2)
-    #     bad_pixel_ratio_list_1.append(bad_pixels_1)
+    metrics['epe'] = np.mean(epe_list)
+    metrics['rmse'] = np.mean(rmse_list)
+    metrics['bad_pixel 2.0'] = np.mean(bad_pixel_ratio_list_2)
+    metrics['bad_pixel 1.0'] = np.mean(bad_pixel_ratio_list_1)
 
-    #     # result = [data_item for data_item in d3_test_data_blob]
-    #     # ic(result)
-    #     # image1_padded, image2_padded = prepare_images_and_depths(image1, image2)
-
-    #     # ic(image1_padded.shape)
-    # metrics['epe'] = np.mean(epe_list)
-    # metrics['rmse'] = np.mean(rmse_list)
-    # metrics['bad_pixel 2.0'] = np.mean(bad_pixel_ratio_list_2)
-    # metrics['bad_pixel 1.0'] = np.mean(bad_pixel_ratio_list_1)
-
-    # print(metrics)
-    # ic(metrics)
+    print(metrics)
+    ic(metrics)
 
 
 def main():
