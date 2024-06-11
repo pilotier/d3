@@ -1,4 +1,4 @@
-name: d3_1
+name: d3
 channels:
   - defaults
   - conda-forge
