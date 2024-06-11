@@ -1,0 +1,10 @@
+name: d3_1
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - numpy
+  - opencv
+  - pip:
+    - tqdm 
+    - icecream

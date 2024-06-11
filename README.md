@@ -1,5 +1,4 @@
-# d3
-A High-fidelity Dynamic Driving Simulation Dataset for Stereo-depth and Sceneflow
+# d3: A High-fidelity Dynamic Driving Simulation Dataset for Stereo-depth and Sceneflow
 
 ![](assets/d3_sample.jpg)
 
@@ -47,7 +46,20 @@ Download the datatset form harvard datavers (link coming soon) and extract the f
     
 ```
 
+## Install requirements
+Create the env
+```
+conda env create -f environment.yml
+conda activate d3
+```
+Install torch - the reader we provide is currently written for pytorch
+```
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia -y
+```
+
+
 ## Run the sample script
+
 To run the script, pass in your d3 path as an argument like this 
 ```
 python sample_script.py --root_dir /path/to/d3
@@ -55,3 +67,5 @@ python sample_script.py --root_dir /path/to/d3
 
 This script iterates through the training dataset and computes our metrics on the prediction against the ground truth
 
+## References 
+(d3 paper reference coming soon)
