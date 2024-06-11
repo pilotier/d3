@@ -57,13 +57,9 @@ def d3_data_loop(args):
 def main():
 
     parser = argparse.ArgumentParser(description="d3 arguments")
-
     parser.add_argument('-r', "--root_dir", type=str, required=True, help='the full path of validation or training splits')
-
     args = parser.parse_args()
     
-    ic(args)
-
     d3_data_loop(args)
 
 if __name__ == "__main__":
