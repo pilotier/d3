@@ -21,7 +21,7 @@
 </p>
 
 ## Download Dataset
-Download the datatset from Harvard Datavers (link coming soon) and extract the files. Your directory should look something like this:
+Download the datatset from [Harvard Dataverse](https://doi.org/10.7910/DVN/36SQKM) and extract the files. Your directory should look something like this:
 
 ```
 - d3
@@ -33,6 +33,7 @@ Download the datatset from Harvard Datavers (link coming soon) and extract the f
             - meta
         - 0002
         - 0003
+        - ...
     - train
         - 0001
             - depth
@@ -43,6 +44,7 @@ Download the datatset from Harvard Datavers (link coming soon) and extract the f
             - meta
         - 0002
         - 0003
+        - ...
     
 ```
 
