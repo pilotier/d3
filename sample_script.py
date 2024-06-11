@@ -14,6 +14,9 @@ def d3_data_loop(args):
 
     d3_loader, d3_intrinsics = d3_utils.fetch_dataloader(root_dir=args.root_dir)
 
+    ic(args.root_dir)
+    ic(d3_intrinsics)
+
     ### Metrics
     # end point error
     epe_list = []
