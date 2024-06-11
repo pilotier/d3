@@ -3,10 +3,6 @@ from utils.d3_reader import D3_Reader
 import torch
 import torch.nn.functional as F
 
-from tqdm import tqdm
-from icecream import ic
-import argparse
-import os
 
 import numpy as np
 
