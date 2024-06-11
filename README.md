@@ -64,7 +64,7 @@ To run the script, pass in your `d3` path as an argument like this:
 python sample_script.py --root_dir /path/to/d3
 ```
 
-This script iterates through the training dataset and computes our metrics on the prediction against the ground truth
+This script iterates through the training dataset and computes our metrics on the prediction against the ground truth.
 
 ## References 
 (d3 paper reference coming soon)
