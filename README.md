@@ -2,7 +2,7 @@
 
 ![](assets/d3_sample.jpg)
 
-With a focus on various weather conditions
+...with a focus on various weather conditions:
 
 <p float="left">
   <img src="assets/v9_0005_000130.jpg" width="200" />
@@ -20,8 +20,8 @@ With a focus on various weather conditions
   <img src="assets/v10_0009_000240.jpg" width="200" /> 
 </p>
 
-## Download the dataset
-Download the datatset form harvard datavers (link coming soon) and extract the files. Your directory should look something like this
+## Download Dataset
+Download the datatset from Harvard Datavers (link coming soon) and extract the files. Your directory should look something like this:
 
 ```
 - d3
@@ -46,21 +46,20 @@ Download the datatset form harvard datavers (link coming soon) and extract the f
     
 ```
 
-## Install requirements
-Create the env
+## Install Requirements
+Create the `env`:
 ```
 conda env create -f environment.yml
 conda activate d3
 ```
-Install torch - the reader we provide is currently written for pytorch
+Install `pytorch`. (The reader we provide is currently written for `pytorch`.)
 ```
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia -y
 ```
 
 
-## Run the sample script
-
-To run the script, pass in your d3 path as an argument like this 
+## Run the Sample Script
+To run the script, pass in your `d3` path as an argument like this:
 ```
 python sample_script.py --root_dir /path/to/d3
 ```
