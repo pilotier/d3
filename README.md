@@ -1,4 +1,4 @@
-# d3: A High-fidelity Dynamic Driving Simulation Dataset for Stereo-depth and Sceneflow
+# PLT-D3: A High-fidelity Dynamic Driving Simulation Dataset for Stereo-depth and Sceneflow
 
 ![](assets/d3_sample.jpg)
 
