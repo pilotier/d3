@@ -1,5 +1,9 @@
 # PLT-D3: A High-fidelity Dynamic Driving Simulation Dataset for Stereo-depth and Sceneflow
 
+Joshua Tokarsky, Ibrahim Abdulhafiz, Satya Ayyalasomayajula, Mostafa Mohsen, Navya G. Rao, Adam Forbes
+
+[ArXiv](https://arxiv.org/abs/2406.07667)  |  [Dataverse](https://doi.org/10.7910/DVN/36SQKM)
+
 ![](assets/d3_sample.jpg)
 
 ...with a focus on various weather conditions:
